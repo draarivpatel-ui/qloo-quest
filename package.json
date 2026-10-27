@@ -1,0 +1,15 @@
+{
+  "name": "qloo-quest",
+  "version": "1.0.0",
+  "description": "QlooQuest: an agentic cultural mystery and taste-detective game with a zero-dependency taste-graph engine",
+  "main": "engine.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "Aariv Patel",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "homepage": "https://aariv.me/qloo-quest/"
+}

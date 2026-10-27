@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QlooQuest, an agentic cultural mystery and taste-detective game</title>
+<meta name="description" content="Interrogate witnesses, follow taste clues across artists, films, places, books and brands, and let a three-agent detective crew weigh the suspects with Bayesian reasoning.">
+<meta name="theme-color" content="#0a0e16">
+<meta property="og:title" content="QlooQuest, an agentic cultural mystery">
+<meta property="og:description" content="A taste-detective game with a three-agent crew, a cross-domain taste graph and an optional Qloo Insights connector.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aariv.me/qloo-quest/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0e16'/%3E%3Ccircle cx='14' cy='14' r='7' fill='none' stroke='%233de0c5' stroke-width='3'/%3E%3Cpath d='M19 19l7 7' stroke='%23ffb454' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the case</a>
+
+<header class="top">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="14" cy="14" r="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M19 19l7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+    <div>
+      <h1>QlooQuest</h1>
+      <p class="tag">An agentic cultural mystery and taste-detective game</p>
+    </div>
+  </div>
+
+  <div class="controls" role="group" aria-label="Case controls">
+    <label class="field" for="case-select"><span>Case</span>
+      <select id="case-select"></select>
+    </label>
+    <label class="field narrow" for="seed-input"><span>Seed</span>
+      <input id="seed-input" type="number" min="1" max="999999" value="7" inputmode="numeric">
+    </label>
+    <button id="btn-generate" type="button" class="btn ghost">Generate case</button>
+  </div>
+
+  <div class="judge" role="group" aria-label="Judge shortcuts">
+    <button id="btn-auto" type="button" class="btn primary">Auto-Step Agent Deduction</button>
+    <button id="btn-solve" type="button" class="btn amber">Solve Full Case</button>
+    <button id="btn-sample" type="button" class="btn ghost">Load Sample API Trace</button>
+  </div>
+</header>
+
+<main id="main" class="board">
+<div class="col">
+  <section class="panel casefile" aria-labelledby="h-case">
+    <h2 id="h-case">Case file</h2>
+    <p id="case-title" class="case-title"></p>
+    <p id="case-brief" class="case-brief"></p>
+    <div class="meter" role="group" aria-label="Inquiry budget">
+      <span id="budget-text" class="meter-text" aria-live="polite"></span>
+      <div id="budget-pips" class="pips" aria-hidden="true"></div>
+    </div>
+    <p id="score-line" class="score-line" aria-live="polite"></p>
+    <button id="btn-accuse" type="button" class="btn danger">Make an accusation</button>
+  </section>
+
+  <section class="panel witnesses" aria-labelledby="h-wit">
+    <h2 id="h-wit">Witness deck</h2>
+    <p class="hint-line">Each question spends one inquiry. Pick the ones the crew says will teach you the most.</p>
+    <div id="witness-deck" class="deck"></div>
+  </section>
+
+</div>
+<div class="col">
+  <section class="panel network" aria-labelledby="h-net">
+    <h2 id="h-net">Cross-domain taste network</h2>
+    <canvas id="taste-canvas" width="760" height="500" role="img" aria-label="Taste network: no clues collected yet"></canvas>
+    <ul class="legend" aria-label="Legend">
+      <li><i class="dot d-artist"></i>Artist</li>
+      <li><i class="dot d-movie"></i>Movie</li>
+      <li><i class="dot d-place"></i>Place</li>
+      <li><i class="dot d-book"></i>Book</li>
+      <li><i class="dot d-brand"></i>Brand</li>
+      <li><i class="dash"></i>Cross-domain bridge</li>
+    </ul>
+  </section>
+
+  <section class="panel matrix" aria-labelledby="h-mat">
+    <h2 id="h-mat">Suspect probability matrix</h2>
+    <div id="suspect-matrix" class="matrix-body"></div>
+  </section>
+
+  <section class="panel evidence" aria-labelledby="h-ev">
+    <h2 id="h-ev">Evidence board</h2>
+    <ol id="clue-board" class="clues"></ol>
+  </section>
+
+</div>
+<div class="col">
+  <section class="panel crew" aria-labelledby="h-crew">
+    <h2 id="h-crew">Detective crew trace</h2>
+    <div id="recommendation" class="recommend" aria-live="polite"></div>
+    <ol id="trace-log" class="trace" aria-live="polite"></ol>
+  </section>
+
+  <section class="panel api" aria-labelledby="h-api">
+    <h2 id="h-api">Qloo connection</h2>
+    <p class="hint-line">The game runs entirely on a local taste graph. Paste a Qloo API key only if you want the correlator to also call the Insights endpoint. The key stays in this tab.</p>
+    <label class="field" for="api-key"><span>Qloo API key (optional)</span>
+      <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="paste-your-qloo-key">
+    </label>
+    <p id="api-status" class="api-status" aria-live="polite">Mode: local taste graph</p>
+  </section>
+</div>
+</main>
+
+<div id="verdict-banner" class="verdict" role="status" aria-live="polite" hidden></div>
+
+<dialog id="accuse-dialog" aria-labelledby="h-acc">
+  <form method="dialog" class="dlg" id="accuse-form">
+    <h2 id="h-acc">Name the target</h2>
+    <p class="hint-line">Pick the persona and the city they call home. A right persona with the wrong city scores less.</p>
+    <fieldset>
+      <legend>Persona</legend>
+      <div id="accuse-suspects" class="choices"></div>
+    </fieldset>
+    <label class="field" for="accuse-city"><span>Home city</span>
+      <select id="accuse-city"></select>
+    </label>
+    <div class="dlg-actions">
+      <button id="accuse-cancel" type="button" class="btn ghost">Keep investigating</button>
+      <button id="accuse-confirm" type="button" class="btn danger">Confirm accusation</button>
+    </div>
+  </form>
+</dialog>
+
+<footer class="foot">
+  <p>QlooQuest is a contest entry built with AI assistance. Entities, names and cases are invented. Qloo calls are optional and off by default. MIT licensed, source on GitHub under draarivpatel-ui.</p>
+</footer>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
