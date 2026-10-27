@@ -1,0 +1,6 @@
+QlooQuest is a cultural detective mystery game powered by Qloo Taste AI cross domain affinity graphs and a four agent investigative crew.
+When a priceless cultural artifact disappears across a global circuit of record shops, arthouse cinemas, night markets, and literary salons, players interrogate witnesses within a strict six action investigation budget.
+Every witness statement reveals a cultural preference across music, film, dining, literature, fashion, or travel.
+Behind the scenes, our Taste Profiler, Cross Domain Linker, Alibi Verifier, and Chief Inspector agents compute cosine similarity across eight dimensional cultural taste vectors and Qloo insights endpoints.
+The interactive network canvas visualizes cross domain bridges linking each clue to the six suspects, while the posterior probability matrix updates in real time after every interrogation.
+Players can step through the autonomous agent solver, inspect the full reasoning trace, or file a formal warrant naming the culprit and destination city.
