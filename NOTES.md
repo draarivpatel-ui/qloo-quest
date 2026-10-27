@@ -15,11 +15,12 @@ Written 2026-10-26 (local clock, checked with `date`).
 
 - All 6 curated cases and 30 generated seeds are solved correctly by the crew within the budget (tests 42 and 50).
 - Curated clues are classified by the extractor exactly as the author declared them (test 21).
-- No browser pixel check beyond the structural tests was run in this build pass; visual layout is unverified until opened in a real browser.
+- Layout was checked in headless Chrome (throwaway profile) at 1400px wide: the opening state, a mid-game state with four clues plus the sample trace, the accusation dialog, and the solved state with the verdict banner. The first look showed a gap caused by shared grid rows, so the page was restructured into three column wrappers. The verdict banner was moved above the board after the solved screenshot showed it below the fold.
 
 ## What is not verified
 
 - The Qloo Insights parameter names and response shape, see the README section on Qloo usage.
+- Narrow (phone width) layout and any browser other than Chrome were not looked at.
 - Any behaviour on browsers older than those with `<dialog>` support, where a fallback attribute is used.
 
 ## Ideas not built

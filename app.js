@@ -301,7 +301,7 @@
     ctl.renderTrace = function () {
       var st = ctl.state;
       var rec = ctl.lastCrew && ctl.lastCrew.recommendation;
-      setHTML('recommendation', rec
+      setHTML('recommendation', rec && !st.over
         ? 'Crew recommends asking ' + esc(rec.witness.name) + ': "' + esc(rec.topic.question) + '" (expected information gain ' + rec.gain.toFixed(3) + ' bits).'
         : (st.over ? 'Case closed.' : 'Run the crew or ask a question to get a recommendation.'));
       var items = st.trace.slice(-14).reverse();
