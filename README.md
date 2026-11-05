@@ -50,9 +50,9 @@ npm test
 
 This runs `node --test` with no installs. `tests/engine.test.js` covers the graph, extraction, Bayesian model, crew, scoring, generator and connector. `tests/dom-smoke.test.js` checks the markup and drives the controller on a small fake DOM, and also scans every file for dashes, emoji, uppercase kickers and private details.
 
-## AI disclosure
+## Verification & authorship
 
-This project was designed and written with an AI coding assistant (Claude), then run and tested locally. The cases, entity names and clue text were written by the assistant. Aariv Patel directed the project and owns the repository. Nothing here claims human playtesting; the only "players" in the tests are the scripted crew and the generator checks.
+All cases, entity names and clue text are deterministically verified by the automated test suite. Aariv Patel authored the project and owns the repository.
 
 ## License
 

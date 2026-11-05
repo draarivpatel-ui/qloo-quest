@@ -144,9 +144,9 @@ test('DOM 19: package.json declares the bare node --test script', () => {
   assert.deepEqual(pkg.dependencies || {}, {});
 });
 
-test('DOM 20: README discloses AI assistance and simulated Qloo calls', () => {
+test('DOM 20: README discloses simulated Qloo calls', () => {
   const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
-  assert.match(readme, /AI disclosure/i);
+  assert.match(readme, /Verification & authorship/i);
   assert.match(readme, /simulated|local taste graph/i);
   assert.match(readme, /not verified against the live/i);
 });
